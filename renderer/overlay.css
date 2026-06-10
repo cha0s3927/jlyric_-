@@ -16,11 +16,9 @@ body {
   background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.4) 100%);
   border-radius: 8px;
   position: relative;
-  /* Native OS-level dragging — no JS coordinate math needed */
   -webkit-app-region: drag;
 }
 
-/* Close button must be non-draggable to remain clickable */
 .close-btn {
   -webkit-app-region: no-drag;
   position: absolute;
@@ -50,6 +48,28 @@ body {
 .close-btn:hover {
   background: rgba(233, 69, 96, 0.6);
   color: white;
+}
+
+/* Click-through status indicator */
+.status-indicator {
+  -webkit-app-region: no-drag;
+  position: absolute;
+  bottom: 4px;
+  left: 10px;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.4);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 10;
+}
+
+.overlay.click-through .status-indicator {
+  opacity: 1;
+}
+
+.overlay.click-through {
+  opacity: 0.5;
 }
 
 .lyric-block {

@@ -7,7 +7,11 @@
     "dev": "electron . --dev",
     "dist": "node build-exe.js"
   },
-  "keywords": ["japanese", "lyrics", "learning"],
+  "keywords": [
+    "japanese",
+    "lyrics",
+    "learning"
+  ],
   "author": "",
   "license": "ISC",
   "description": "日语歌词学习工具",

@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:electronjs.org)",
+      "WebFetch(domain:www.electronjs.org)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:zhuanlan.zhihu.com)",
+      "WebFetch(domain:rmw.link)",
+      "WebFetch(domain:stackoverflow.com)"
+    ]
+  }
+}

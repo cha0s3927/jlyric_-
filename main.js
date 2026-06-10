@@ -8,6 +8,7 @@ let mainWindow;
 let overlayWindow;
 let DB;
 let SETTINGS;
+let overlayIgnoreState = false; // tracks current setIgnoreMouseEvents state
 
 const DATA_DIR = app.getPath('userData');
 const DB_PATH = path.join(DATA_DIR, 'jlyric.db');
@@ -54,6 +55,18 @@ function createOverlayWindow() {
   overlayWindow.loadFile(path.join(__dirname, 'renderer', 'overlay.html'));
   overlayWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
 
+  // Save position when window is moved (native drag via -webkit-app-region)
+  let saveTimer = null;
+  overlayWindow.on('move', () => {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => {
+      const [x, y] = overlayWindow.getPosition();
+      updateSetting('overlay.x', x);
+      updateSetting('overlay.y', y);
+      SETTINGS = getSettings();
+    }, 200);
+  });
+
   // Send settings to overlay
   overlayWindow.webContents.on('did-finish-load', () => {
     overlayWindow.webContents.send('overlay:settings', SETTINGS);
@@ -87,6 +100,21 @@ function registerGlobalShortcuts() {
       }
     });
   }
+}
+
+function registerOverlayShortcuts() {
+  // Ctrl+Shift+T: toggle click-through mode
+  globalShortcut.register('CommandOrControl+Shift+T', () => {
+    if (overlayWindow && overlayWindow.isVisible()) {
+      overlayIgnoreState = !overlayIgnoreState;
+      overlayWindow.setIgnoreMouseEvents(overlayIgnoreState, { forward: overlayIgnoreState });
+      overlayWindow.webContents.send('overlay:ignore-state', overlayIgnoreState);
+    }
+  });
+}
+
+function unregisterOverlayShortcuts() {
+  globalShortcut.unregister('CommandOrControl+Shift+T');
 }
 
 app.whenReady().then(async () => {
@@ -150,6 +178,8 @@ ipcMain.handle('songs:export-json', async (event, songId) => DB.exportSongAsJSON
 // === IPC handlers: Overlay ===
 ipcMain.handle('overlay:show', async (event, songId) => {
   if (!overlayWindow) createOverlayWindow();
+  overlayIgnoreState = false;
+  registerOverlayShortcuts();
   // Send settings first
   overlayWindow.webContents.send('overlay:settings', SETTINGS);
   // Then send song data
@@ -163,13 +193,15 @@ ipcMain.handle('overlay:show', async (event, songId) => {
 });
 
 ipcMain.handle('overlay:close', async () => {
-  if (overlayWindow) overlayWindow.hide();
+  if (overlayWindow) {
+    unregisterOverlayShortcuts();
+    overlayWindow.hide();
+  }
 });
 
 ipcMain.handle('overlay:set-position', async (event, { x, y }) => {
   if (overlayWindow) {
-    const [width, height] = overlayWindow.getSize();
-    overlayWindow.setBounds({ x, y, width, height });
+    overlayWindow.setPosition(Math.round(x), Math.round(y));
     updateSetting('overlay.x', x);
     updateSetting('overlay.y', y);
     SETTINGS = getSettings();
