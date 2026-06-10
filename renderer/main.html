@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JLyric - 日语歌词学习工具</title>
+  <link rel="stylesheet" href="main.css">
+</head>
+<body>
+  <div class="app">
+    <!-- 顶部搜索栏 -->
+    <header class="header">
+      <h1 class="logo">JLyric</h1>
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="搜索歌曲名或歌手..." />
+        <button id="searchBtn" class="btn btn-primary">搜索</button>
+      </div>
+      <div class="import-actions">
+        <button id="importFileBtn" class="btn btn-secondary">导入文件</button>
+        <button id="settingsBtn" class="btn btn-secondary">设置</button>
+        <input type="file" id="fileInput" accept=".lrc,.json,.yaml,.yml" hidden />
+      </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+      <!-- 左侧：歌曲列表 -->
+      <section class="song-list-panel">
+        <h2>我的歌曲</h2>
+        <div id="songList" class="song-list"></div>
+      </section>
+
+      <!-- 右侧：搜索结果 / 歌词编辑 -->
+      <section class="detail-panel">
+        <div id="searchResults" class="search-results hidden">
+          <h2>搜索结果 <button id="closeResults" class="btn btn-small">&times;</button></h2>
+          <div id="resultList"></div>
+        </div>
+
+        <div id="lyricEditor" class="lyric-editor hidden">
+          <div class="editor-header">
+            <h2 id="editorTitle">编辑歌词</h2>
+            <div class="editor-actions">
+              <button id="showOverlayBtn" class="btn btn-primary">显示歌词</button>
+              <button id="exportJSONBtn" class="btn btn-secondary">导出 JSON</button>
+              <button id="deleteSongBtn" class="btn btn-danger">删除</button>
+            </div>
+          </div>
+          <div id="lyricTable" class="lyric-table-container"></div>
+        </div>
+
+        <div id="emptyState" class="empty-state">
+          <p>搜索歌曲导入，或导入本地歌词文件</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Settings Modal -->
+  <div id="settingsModal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>设置</h2>
+        <button id="closeSettings" class="btn btn-small">&times;</button>
+      </div>
+      <div class="modal-body">
+        <!-- Font Settings -->
+        <section class="settings-section">
+          <h3>字体大小</h3>
+          <div class="setting-row">
+            <label>原文</label>
+            <input type="range" id="textSizeSlider" min="12" max="48" value="22" />
+            <span id="textSizeValue">22px</span>
+          </div>
+          <div class="setting-row">
+            <label>罗马音</label>
+            <input type="range" id="readingSizeSlider" min="10" max="32" value="14" />
+            <span id="readingSizeValue">14px</span>
+          </div>
+          <div class="setting-row">
+            <label>翻译</label>
+            <input type="range" id="translationSizeSlider" min="10" max="32" value="14" />
+            <span id="translationSizeValue">14px</span>
+          </div>
+        </section>
+
+        <!-- Shortcut Settings -->
+        <section class="settings-section">
+          <h3>快捷键</h3>
+          <div class="setting-row">
+            <label>下一行</label>
+            <input type="text" id="shortcutNext" class="shortcut-input" placeholder="点击后按键" readonly />
+          </div>
+          <div class="setting-row">
+            <label>上一行</label>
+            <input type="text" id="shortcutPrev" class="shortcut-input" placeholder="点击后按键" readonly />
+          </div>
+          <div class="setting-row">
+            <label>关闭悬浮窗</label>
+            <input type="text" id="shortcutClose" class="shortcut-input" placeholder="点击后按键" readonly />
+          </div>
+        </section>
+
+        <div class="modal-footer">
+          <button id="resetSettingsBtn" class="btn btn-danger">重置默认</button>
+          <button id="saveSettingsBtn" class="btn btn-primary">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>

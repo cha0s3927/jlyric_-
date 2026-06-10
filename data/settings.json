@@ -1,0 +1,18 @@
+{
+  "overlay": {
+    "x": null,
+    "y": null,
+    "width": 800,
+    "height": 160
+  },
+  "fonts": {
+    "textSize": 22,
+    "readingSize": 14,
+    "translationSize": 14
+  },
+  "shortcuts": {
+    "next": "CommandOrControl+Right",
+    "prev": "CommandOrControl+Left",
+    "close": "Escape"
+  }
+}

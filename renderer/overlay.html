@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>JLyric Overlay</title>
+  <link rel="stylesheet" href="overlay.css">
+</head>
+<body>
+  <div id="overlay" class="overlay">
+    <!-- Close button -->
+    <button id="closeBtn" class="close-btn" title="关闭 (Esc)">&times;</button>
+    <!-- Current line -->
+    <div class="lyric-block current">
+      <div id="currentText" class="text-original"></div>
+      <div id="currentReading" class="text-reading"></div>
+      <div id="currentTranslation" class="text-translation"></div>
+    </div>
+    <!-- Next line -->
+    <div class="lyric-block next">
+      <div id="nextText" class="text-original-small"></div>
+    </div>
+  </div>
+
+  <script src="overlay.js"></script>
+</body>
+</html>

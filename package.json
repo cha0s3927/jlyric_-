@@ -1,0 +1,20 @@
+{
+  "name": "jlyric",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "dist": "node build-exe.js"
+  },
+  "keywords": ["japanese", "lyrics", "learning"],
+  "author": "",
+  "license": "ISC",
+  "description": "日语歌词学习工具",
+  "devDependencies": {
+    "electron": "^33.4.11"
+  },
+  "dependencies": {
+    "sql.js": "^1.14.1"
+  }
+}

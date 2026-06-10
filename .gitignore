@@ -1,0 +1,4 @@
+node_modules/
+data/jlyric.db
+*.log
+dist/ 
