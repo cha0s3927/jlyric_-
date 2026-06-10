@@ -51,28 +51,14 @@ document.getElementById('closeBtn').addEventListener('click', () => {
   window.api.overlay.close();
 });
 
-// === Native drag via -webkit-app-region ===
-// The overlay element has -webkit-app-region: drag set in CSS.
-// This lets the OS handle dragging natively — no JS coordinate math needed.
-// The close button has -webkit-app-region: no-drag so it remains clickable.
-// Mouse events are toggled on hover to allow interaction.
-
+// === Mouse pass-through toggle ===
 const overlay = document.getElementById('overlay');
 const closeBtn = document.getElementById('closeBtn');
 
-// Start as click-through (mouse passes through to windows below)
-window.api.overlay.setIgnoreMouse(true);
+// Overlay is always interactive so -webkit-app-region: drag works immediately
+window.api.overlay.setIgnoreMouse(false);
 
-overlay.addEventListener('mouseenter', () => {
-  window.api.overlay.setIgnoreMouse(false);
-});
-
-overlay.addEventListener('mouseleave', (e) => {
-  if (!closeBtn.contains(e.relatedTarget)) {
-    window.api.overlay.setIgnoreMouse(true);
-  }
-});
-
-closeBtn.addEventListener('mouseleave', () => {
-  window.api.overlay.setIgnoreMouse(true);
+// Listen for click-through state changes (Ctrl+Shift+T shortcut)
+window.api.overlay.onIgnoreState((ignored) => {
+  overlay.classList.toggle('click-through', ignored);
 });

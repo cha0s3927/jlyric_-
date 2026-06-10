@@ -21,6 +21,7 @@ contextBridge.exposeInMainWorld('api', {
     onNavigate: (cb) => ipcRenderer.on('overlay:navigate', (e, data) => cb(data)),
     onLoadSong: (cb) => ipcRenderer.on('overlay:load-song', (e, data) => cb(data)),
     onSettings: (cb) => ipcRenderer.on('overlay:settings', (e, data) => cb(data)),
+    onIgnoreState: (cb) => ipcRenderer.on('overlay:ignore-state', (e, data) => cb(data)),
   },
   settings: {
     get: () => ipcRenderer.invoke('settings:get'),
