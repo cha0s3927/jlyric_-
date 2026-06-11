@@ -53,7 +53,7 @@ console.log('  Updated locales');
 const resourcesApp = path.join(OUT_DIR, 'resources', 'app');
 fs.mkdirSync(resourcesApp, { recursive: true });
 
-const filesToCopy = ['main.js', 'preload.js', 'package.json', 'src', 'renderer'];
+const filesToCopy = ['main.js', 'preload.js', 'package.json', 'src', 'renderer', 'data'];
 for (const file of filesToCopy) {
   const src = path.join(PROJECT_DIR, file);
   const dest = path.join(resourcesApp, file);
@@ -68,7 +68,7 @@ for (const file of filesToCopy) {
 const appNodeModules = path.join(resourcesApp, 'node_modules');
 fs.mkdirSync(appNodeModules, { recursive: true });
 
-const deps = ['sql.js'];
+const deps = ['sql.js', 'kuromoji'];
 for (const dep of deps) {
   const src = path.join(PROJECT_DIR, 'node_modules', dep);
   const dest = path.join(appNodeModules, dep);
@@ -80,7 +80,7 @@ for (const dep of deps) {
 }
 
 // Create minimal package.json
-const pkgJson = { name: 'jlyric', version: '1.0.0', main: 'main.js', dependencies: { 'sql.js': '^1.14.1' } };
+const pkgJson = { name: 'jlyric', version: '1.0.0', main: 'main.js', dependencies: { 'sql.js': '^1.14.1', 'kuromoji': '^0.1.2' } };
 fs.writeFileSync(path.join(resourcesApp, 'package.json'), JSON.stringify(pkgJson, null, 2));
 
 // 6. Calculate size (simple recursive walk)

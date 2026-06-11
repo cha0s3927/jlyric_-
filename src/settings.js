@@ -9,6 +9,7 @@ const DEFAULTS = {
     prev: 'CommandOrControl+Left',
     close: 'Escape',
   },
+  analysis: { showAnalysis: false },
 };
 
 let settings;

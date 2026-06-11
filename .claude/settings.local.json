@@ -7,7 +7,10 @@
       "WebFetch(domain:raw.githubusercontent.com)",
       "WebFetch(domain:zhuanlan.zhihu.com)",
       "WebFetch(domain:rmw.link)",
-      "WebFetch(domain:stackoverflow.com)"
+      "WebFetch(domain:stackoverflow.com)",
+      "WebFetch(domain:www.npmjs.com)",
+      "WebFetch(domain:developer.yahoo.co.jp)",
+      "WebFetch(domain:github.com)"
     ]
   }
 }

@@ -239,6 +239,7 @@ document.getElementById('saveSettingsBtn').addEventListener('click', async () =>
   await window.api.settings.update('shortcuts.next', pendingSettings.shortcuts.next);
   await window.api.settings.update('shortcuts.prev', pendingSettings.shortcuts.prev);
   await window.api.settings.update('shortcuts.close', pendingSettings.shortcuts.close);
+  await window.api.settings.update('analysis.showAnalysis', pendingSettings.analysis?.showAnalysis ?? false);
   document.getElementById('settingsModal').classList.add('hidden');
 });
 
@@ -255,6 +256,9 @@ function populateSettingsUI(settings) {
   document.getElementById('shortcutNext').value = settings.shortcuts.next;
   document.getElementById('shortcutPrev').value = settings.shortcuts.prev;
   document.getElementById('shortcutClose').value = settings.shortcuts.close;
+
+  // Analysis toggle
+  document.getElementById('showAnalysisToggle').checked = settings.analysis?.showAnalysis ?? false;
 }
 
 // Font slider live update
@@ -268,6 +272,12 @@ function populateSettingsUI(settings) {
     document.getElementById(valueId).textContent = val + 'px';
     pendingSettings.fonts[settingsKey] = val;
   });
+});
+
+// Analysis toggle
+document.getElementById('showAnalysisToggle').addEventListener('change', (e) => {
+  if (!pendingSettings.analysis) pendingSettings.analysis = {};
+  pendingSettings.analysis.showAnalysis = e.target.checked;
 });
 
 // Shortcut recording

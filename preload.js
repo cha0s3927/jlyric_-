@@ -18,6 +18,7 @@ contextBridge.exposeInMainWorld('api', {
     setPosition: (x, y) => ipcRenderer.invoke('overlay:set-position', { x, y }),
     getPosition: () => ipcRenderer.invoke('overlay:get-position'),
     setIgnoreMouse: (ignore) => ipcRenderer.invoke('overlay:set-ignore-mouse', ignore),
+    resizeHeight: (height) => ipcRenderer.invoke('overlay:resize-height', height),
     onNavigate: (cb) => ipcRenderer.on('overlay:navigate', (e, data) => cb(data)),
     onLoadSong: (cb) => ipcRenderer.on('overlay:load-song', (e, data) => cb(data)),
     onSettings: (cb) => ipcRenderer.on('overlay:settings', (e, data) => cb(data)),
@@ -27,5 +28,10 @@ contextBridge.exposeInMainWorld('api', {
     get: () => ipcRenderer.invoke('settings:get'),
     update: (path, value) => ipcRenderer.invoke('settings:update', { path, value }),
     reset: () => ipcRenderer.invoke('settings:reset'),
+  },
+  lyric: {
+    analyze: (songId, lineIndex, text) =>
+      ipcRenderer.invoke('lyric:analyze', { songId, lineIndex, text }),
+    analyzerReady: () => ipcRenderer.invoke('lyric:analyzer-ready'),
   },
 });
