@@ -19,6 +19,7 @@
     "electron": "^33.4.11"
   },
   "dependencies": {
+    "kuromoji": "^0.1.2",
     "sql.js": "^1.14.1"
   }
 }

@@ -224,6 +224,13 @@ ipcMain.handle('overlay:get-position', async () => {
   return { x: 0, y: 0 };
 });
 
+ipcMain.handle('overlay:resize-height', async (event, height) => {
+  if (overlayWindow) {
+    const [width] = overlayWindow.getSize();
+    overlayWindow.setSize(width, Math.round(height));
+  }
+});
+
 // === IPC handlers: Settings ===
 ipcMain.handle('settings:get', async () => getSettings());
 ipcMain.handle('settings:update', async (event, { path, value }) => {
@@ -246,3 +253,31 @@ ipcMain.handle('settings:reset', async () => {
   }
   return SETTINGS;
 });
+
+// === IPC handlers: Lyric Analysis ===
+let analyzerInitialized = false;
+
+ipcMain.handle('lyric:analyze', async (event, { songId, lineIndex, text }) => {
+  if (!analyzerInitialized) {
+    const { ensureTokenizer } = require('./src/analyzer');
+    const { loadDictionary } = require('./src/jp-cn-dictionary');
+    const dictPath = path.join(__dirname, 'data', 'jp-cn-dict.json');
+    try {
+      loadDictionary(dictPath);
+    } catch (e) {
+      console.warn('Failed to load JP-CN dictionary:', e.message);
+    }
+    try {
+      await ensureTokenizer();
+      analyzerInitialized = true;
+    } catch (e) {
+      console.error('Failed to initialize kuromoji:', e.message);
+      return { songId, lineIndex, results: [], error: e.message };
+    }
+  }
+  const { analyzeLine } = require('./src/analyzer');
+  const results = await analyzeLine(text);
+  return { songId, lineIndex, results };
+});
+
+ipcMain.handle('lyric:analyzer-ready', async () => analyzerInitialized);
